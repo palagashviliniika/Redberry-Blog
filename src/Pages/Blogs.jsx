@@ -1,7 +1,7 @@
 import React from 'react';
 import Navbar from '../Components/Navbar';
 import Landing from '../Components/Landing';
-import Components from '../Components/Components';
+import Categories from '../Components/Categories';
 
 const Blogs = () => {
     return (
@@ -10,7 +10,9 @@ const Blogs = () => {
             <Landing>
                 ბლოგი
             </Landing>
-            <Components />
+            <div className='flex justify-center'>
+                <Categories />
+            </div>
         </div>
     );
 };
