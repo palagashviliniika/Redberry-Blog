@@ -8,6 +8,9 @@ module.exports = {
       colors: {
         "customPurple": {
           DEFAULT: "#5D37F3"
+        },
+        "customBlack": {
+          DEFAULT: "#1A1A1F"
         }
       }
     },

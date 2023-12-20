@@ -7,7 +7,7 @@ export default function SingleCategory({title, textColor, bgColor}) {
       };
     
   return (
-    <button className={`py-2 px-4 text-xs font-medium rounded-[30px]`} style={dynamicStyles}>
+    <button className={`py-2 px-4 text-xs font-medium rounded-[30px] whitespace-nowrap`} style={dynamicStyles}>
         {title}
     </button>
   )
