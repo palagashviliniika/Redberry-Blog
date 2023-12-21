@@ -11,6 +11,23 @@ module.exports = {
         },
         "customBlack": {
           DEFAULT: "#1A1A1F"
+        },
+        "customGray": {
+          DEFAULT: "#E4E3EB",
+          fill: "#FCFCFD",
+          plc: "#85858D"
+        },
+        "inputBG": {
+          DEFAULT: "#F9F9FA",
+          error: "#FAF2F3",
+          correct: "#F8FFF8",
+          focus: "#F7F7FF"
+        },
+        "border": {
+          DEFAULT: "#E4E3EB",
+          error: "#EA1919",
+          correct: "#14D81C",
+          focus: "#5D37F3"
         }
       }
     },
