@@ -28,6 +28,9 @@ module.exports = {
           error: "#EA1919",
           correct: "#14D81C",
           focus: "#5D37F3"
+        },
+        "customRed": {
+          DEFAULT: "#EA1919"
         }
       }
     },
