@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react'
 import infoCircle from '../assets/infoCircle.png'
 import api from '../api/posts'
 import { useAuth } from '../Contexts/AuthContext'
+import { Success } from './Success'
 
-export const Login = () => {
-    const { isLoggedIn, login, logout } = useAuth();
+export const Login = ({onClose}) => {
+    const { isLoggedIn, login, logout, isAuthenticated } = useAuth();
     const [isValidated, setIsValidated] = useState(null)
     const [error, setError] = useState('')
     const [formData, setFormData] = useState(() => {
@@ -81,43 +82,51 @@ export const Login = () => {
 
     return (
         <>
-            <h1 className='place-self-center font-bold text-2xl'>
-                შესვლა
-            </h1>
-            <form onSubmit={handleSubmit}>
-                <div className='flex flex-col gap-2'>
-                    <label 
-                        htmlFor="email"
-                        className='font-medium text-sm text-customBlack pt-6'
-                    >
-                        ელ-ფოსტა
-                    </label>
-                    <input 
-                        type="email" 
-                        name='email'
-                        id='email'
-                        placeholder='Example@redberry.ge'
-                        value={formData.email}
-                        onChange={handleChange}
-                        className={`text-sm font-normal border ${isValidated === false ? 'border-border-error' : 'border-border'} rounded-xl py-3 px-4 ${isValidated === false ? 'bg-inputBG-error' : 'bg-inputBG'}  focus:bg-inputBG-focus placeholder-customGray-plc focus:outline-border-focus`}
-                    />
-                    {
-                        error &&
-                            <div className='flex items-center'>
-                                <img src={infoCircle} alt="" />
-                                <p className='pl-2 text-customRed font-normal text-xs'>
-                                    {error}
-                                </p>
-                            </div>
-                    }
-                    <button
-                        type='submit'
-                        className='mt-4 font-medium text-white bg-customPurple rounded-lg px-5 py-2.5 text-sm'
-                    >
-                        შესვლა
-                    </button>
-                </div>
-            </form>
+        {
+            !isAuthenticated() ? (
+            <>
+                <h1 className='place-self-center font-bold text-2xl'>
+                    შესვლა
+                </h1>
+                <form onSubmit={handleSubmit}>
+                    <div className='flex flex-col gap-2'>
+                        <label 
+                            htmlFor="email"
+                            className='font-medium text-sm text-customBlack pt-6'
+                        >
+                            ელ-ფოსტა
+                        </label>
+                        <input 
+                            type="email" 
+                            name='email'
+                            id='email'
+                            placeholder='Example@redberry.ge'
+                            value={formData.email}
+                            onChange={handleChange}
+                            className={`text-sm font-normal border ${isValidated === false ? 'border-border-error' : 'border-border'} rounded-xl py-3 px-4 ${isValidated === false ? 'bg-inputBG-error' : 'bg-inputBG'}  focus:bg-inputBG-focus placeholder-customGray-plc focus:outline-border-focus`}
+                        />
+                        {
+                            error &&
+                                <div className='flex items-center'>
+                                    <img src={infoCircle} alt="" />
+                                    <p className='pl-2 text-customRed font-normal text-xs'>
+                                        {error}
+                                    </p>
+                                </div>
+                        }
+                        <button
+                            type='submit'
+                            className='mt-4 font-medium text-white bg-customPurple rounded-lg px-5 py-2.5 text-sm'
+                        >
+                            შესვლა
+                        </button>
+                    </div>
+                </form>
+            </>
+            ) : (
+                <Success onClose={onClose}/>
+            )
+        }
         </>
     )
 }

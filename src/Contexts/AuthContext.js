@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(!!Cookies.get('authToken'));
 
   useEffect(() => {
     // Check if the user is logged in based on the presence of a cookie
@@ -26,8 +26,13 @@ export const AuthProvider = ({ children }) => {
     setIsLoggedIn(false);
   };
 
+  const isAuthenticated = () => {
+    // Return whether the authentication token cookie is present or not
+    return !!Cookies.get('authToken');
+  };
+
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+    <AuthContext.Provider value={{ isLoggedIn, login, logout, isAuthenticated }}>
       {children}
     </AuthContext.Provider>
   );

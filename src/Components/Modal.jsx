@@ -4,7 +4,6 @@ import { Login } from './Login'
 
 export const Modal = ({isVisible, onClose}) => {
 
-
     const handleClose = (e) => {
         if(e.target.id === 'wrapper') onClose();
     }
@@ -18,7 +17,7 @@ export const Modal = ({isVisible, onClose}) => {
                             <button className='place-self-end' onClick={onClose}>
                                 <CloseIcon />
                             </button>
-                            <Login />
+                            <Login onClose={onClose}/>
                         </div>
                     </div>
                 </div>
