@@ -31,6 +31,10 @@ module.exports = {
         },
         "customRed": {
           DEFAULT: "#EA1919"
+        },
+        "textGray": {
+          DEFAULT: "#85858D",
+          dark: "#404049"
         }
       }
     },
