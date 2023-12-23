@@ -11,7 +11,7 @@ export default function Categories() {
             try {
                 const response = await api.get('/categories')
                 console.log(response.status);
-                console.log(response.data.data);
+                // console.log(response.data.data);
                 setCategories(response.data.data);
             } catch (err) {
                 console.log(err.response.status);
@@ -29,6 +29,7 @@ export default function Categories() {
                 title={category.title}
                 textColor={category.text_color}
                 bgColor={category.background_color}
+                hover
             />
         )
     })
