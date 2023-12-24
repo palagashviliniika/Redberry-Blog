@@ -7,7 +7,7 @@ import { Blogs } from '../Components/Blogs';
 const Home = () => {
     return (
         <div>
-            <Navbar />
+            <Navbar btn/>
             <Landing>
                 ბლოგი
             </Landing>

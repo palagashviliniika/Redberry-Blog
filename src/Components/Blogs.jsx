@@ -36,7 +36,7 @@ export const Blogs = () => {
   })
 
   return (
-    <div className='px-[76px] my-16 grid grid-cols-3 gap-x-8 gap-y-14'>
+    <div className='mx-[76px] my-16 grid grid-cols-3 gap-x-8 gap-y-14'>
         {blogItems}
     </div>
   )

@@ -35,7 +35,7 @@ export default function Categories() {
     })
 
     return (
-        <div className='px-[76px] flex gap-6 overflow-x-auto w-[684px]'>
+        <div className='mx-[76px] flex gap-6 overflow-x-auto w-[684px]'>
             {categoryItems}
         </div>
   )

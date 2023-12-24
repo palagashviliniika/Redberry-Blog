@@ -15,7 +15,9 @@ module.exports = {
         "customGray": {
           DEFAULT: "#E4E3EB",
           fill: "#FCFCFD",
-          plc: "#85858D"
+          plc: "#85858D",
+          page: "#FBFAFF",
+          uploaded: "#F2F2FA"
         },
         "inputBG": {
           DEFAULT: "#F9F9FA",
@@ -35,8 +37,15 @@ module.exports = {
         "textGray": {
           DEFAULT: "#85858D",
           dark: "#404049"
+        },
+        "imgInput": {
+          DEFAULT: "#F4F3FF",
+          hover: "#F1EFFB"
         }
-      }
+      },
+      resize: {
+        none: 'none',
+      },
     },
   },
   plugins: [

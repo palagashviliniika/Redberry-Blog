@@ -3,6 +3,7 @@ import infoCircle from '../assets/infoCircle.png'
 import api from '../api/posts'
 import { useAuth } from '../Contexts/AuthContext'
 import { Success } from './Success'
+import { Label } from './Label'
 
 export const Login = ({onClose}) => {
     const { isLoggedIn, login, logout, isAuthenticated } = useAuth();
@@ -90,12 +91,7 @@ export const Login = ({onClose}) => {
                 </h1>
                 <form onSubmit={handleSubmit}>
                     <div className='flex flex-col gap-2'>
-                        <label 
-                            htmlFor="email"
-                            className='font-medium text-sm text-customBlack pt-6'
-                        >
-                            ელ-ფოსტა
-                        </label>
+                        <Label htmlFor={'email'} title={'ელ-ფოსტა'}/>
                         <input 
                             type="email" 
                             name='email'

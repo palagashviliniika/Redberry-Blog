@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { Modal } from './Modal';
 import { useAuth } from '../Contexts/AuthContext';
 
-export default function Navbar() {
+export default function Navbar({btn}) {
   const [showLogin, setShowLogin] = useState(false);
   const { isAuthenticated } = useAuth();
 
@@ -19,17 +19,20 @@ export default function Navbar() {
 
   return (
     <>
-      <div className='bg-white w-screen h-20 z-10 sticky flex items-center justify-between px-[76px]'>
+      <div className={`bg-white w-screen h-20 z-10 sticky flex items-center ${btn ? 'justify-between' : 'justify-center'} px-[76px]`}>
         <Link to="/">
           <img src={redberryLogo} alt="Redberry Logo" />
         </Link>
-        <div className='flex'>
-          {isAuthenticated() ? (
-            <Button to='/add_blog'>დაამატე ბლოგი</Button>
-          ) : (
-            <Button onClick={enableLogin}>შესვლა</Button>
-          )}
-        </div>
+        {
+          btn &&
+            <div className='flex'>
+              {isAuthenticated() ? (
+                <Button to='/add_blog'>დაამატე ბლოგი</Button>
+              ) : (
+                <Button onClick={enableLogin}>შესვლა</Button>
+              )}
+            </div>
+        }
       </div>
       <Modal isVisible={showLogin} onClose={closeLogin} />
     </>
