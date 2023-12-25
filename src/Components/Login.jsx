@@ -91,7 +91,7 @@ export const Login = ({onClose}) => {
                 </h1>
                 <form onSubmit={handleSubmit}>
                     <div className='flex flex-col gap-2'>
-                        <Label htmlFor={'email'} title={'ელ-ფოსტა'}/>
+                        <label htmlFor={'email'} className='font-medium text-sm text-customBlack pt-6'>ელ-ფოსტა</label>
                         <input 
                             type="email" 
                             name='email'

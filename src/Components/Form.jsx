@@ -13,6 +13,20 @@ export const Form = () => {
     const [isDropdownVisible, setIsDropdownVisible] = useState(false);
     const [categories, setCategories] = useState([])
     const [selectedValues, setSelectedValues] = useState([]);
+    const [formData, setFormData] = useState({
+        image: "",
+        author: "",
+        title: "",
+        description: "",
+        publish_date: "",
+        categories: "",
+        email: ""
+    })
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        console.log(formData);
+    }
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -88,85 +102,75 @@ export const Form = () => {
     };
 
     return (
-        <form className='pt-10'>
-                <Label htmlFor={"img"} title={'ატვირთეთ ფოტო'}/>
+        <form onSubmit={handleSubmit} className='pt-10'>
+                <label 
+                    htmlFor={"image"}
+                    className='font-medium text-sm text-customBlack pt-6'
+                >
+                    ატვირთეთ ფოტო
+                </label>
                 {
                 selectedFile ? (
                     <div className='bg-customGray-uploaded p-4 rounded-xl flex items-center justify-between mt-2'>
-                    <div className='flex items-center gap-3'>
-                        <img src={gallery} alt="" />
-                        <p className='text-sm'>
-                        {selectedFile.name}
-                        </p>
-                    </div>
-                    <div className='cursor-pointer' onClick={handleDeleteFile}>
-                        <CloseIcon />
-                    </div>
+                        <div className='flex items-center gap-3'>
+                            <img src={gallery} alt="" />
+                            <p className='text-sm'>
+                            {selectedFile.name}
+                            </p>
+                        </div>
+                        <div className='cursor-pointer' onClick={handleDeleteFile}>
+                            <CloseIcon />
+                        </div>
                     </div>
                 ) : (
                     <div 
-                    className={`flex items-center justify-center w-full bg-imgInput hover:bg-imgInput-hover ${isDragOver && 'bg-imgInput-hover' } mt-2`}
-                    onDragOver={handleDragOver}  
-                    onDragLeave={handleDragLeave}
-                    onDrop={handleDrop}
+                        className={`flex items-center justify-center w-full bg-imgInput hover:bg-imgInput-hover ${isDragOver && 'bg-imgInput-hover' } mt-2`}
+                        onDragOver={handleDragOver}  
+                        onDragLeave={handleDragLeave}
+                        onDrop={handleDrop}
                     >
-                    <label 
-                        htmlFor="img" 
-                        className='flex flex-col items-center justify-center w-full h-[180px] border border-textGray border-dashed rounded-lg cursor-pointer'
+                        <label 
+                            htmlFor="image" 
+                            className='flex flex-col items-center justify-center w-full h-[180px] border border-textGray border-dashed rounded-lg cursor-pointer'
                         >
-                        <div className='flex flex-col items-center justify-center gap-6 py-12'>
-                        <DropdownIcon />
-                        <p className='text-sm font-normal'>
-                        {isDragOver
-                            ? 'ჩააგდეთ ფაილი'
-                            : <span>
-                                ჩააგდეთ ფაილი აქ ან{' '}
-                                <span className='font-medium underline decoration-solid'>აირჩიეთ ფაილი</span>
-                            </span>
-                        }
-                            
-                        </p>
-                        </div>
-                        <input id='img' type="file" className='hidden' onChange={handleFileChange}/>
-                    </label>
+                            <div className='flex flex-col items-center justify-center gap-6 py-12'>
+                            <DropdownIcon />
+                                <p className='text-sm font-normal'>
+                                    {isDragOver
+                                        ? 'ჩააგდეთ ფაილი'
+                                        : <span>
+                                            ჩააგდეთ ფაილი აქ ან{' '}
+                                            <span className='font-medium underline decoration-solid'>აირჩიეთ ფაილი</span>
+                                        </span>
+                                    }
+                                </p>
+                            </div>
+                            <input id='image' type="file" className='hidden' onChange={handleFileChange}/>
+                        </label>
                     </div>
                 )
                 }
 
                 <div className='grid grid-cols-2 gap-6'>
-                <div className='flex flex-col gap-2'>
-                    <Label htmlFor={'author'} title={'ავტორი *'}/>
-                    <input 
-                    type="text" 
-                    name='author'
-                    id='author'
-                    placeholder='შეიყვნეთ ავტორი'
-                    className='text-sm font-normal border border-border rounded-xl py-3 px-4 bg-inputBG focus:bg-inputBG-focus placeholder-customGray-plc focus:outline-border-focus'
-                    />
-                    <ul className='text-xs text-customGray-plc'>
-                        <li>• მინიმუმ 4 სიმბოლო</li>
-                        <li>• მინიმუმ ორი სიტყვა</li>
-                        <li>• მხოლოდ ქართული სიმბოლოები</li>
-                    </ul>
+                    <div className='flex flex-col gap-2'>
+                        <Label htmlFor={'author'} title={'ავტორი *'} type={"text"} placeholder={'შეიყვნეთ ავტორი'}/>
+                        <ul className='text-xs text-customGray-plc'>
+                            <li>• მინიმუმ 4 სიმბოლო</li>
+                            <li>• მინიმუმ ორი სიტყვა</li>
+                            <li>• მხოლოდ ქართული სიმბოლოები</li>
+                        </ul>
+                    </div>
+
+                    <div className='flex flex-col gap-2'>
+                        <Label htmlFor={'title'} title={'სათაური *'} type={"text"} placeholder={'შეიყვნეთ სათაური'}/>
+                        <ul className='text-xs text-customGray-plc'>
+                            <li>მინიმუმ 4 სიმბოლო</li>
+                        </ul>
+                    </div>
                 </div>
 
                 <div className='flex flex-col gap-2'>
-                    <Label htmlFor={'author'} title={'სათაური *'}/>
-                    <input 
-                    type="text" 
-                    name='title'
-                    id='title'
-                    placeholder='შეიყვნეთ სათაური'
-                    className='text-sm font-normal border border-border rounded-xl py-3 px-4 bg-inputBG focus:bg-inputBG-focus placeholder-customGray-plc focus:outline-border-focus'
-                    />
-                    <ul className='text-xs text-customGray-plc'>
-                        <li>მინიმუმ 4 სიმბოლო</li>
-                    </ul>
-                </div>
-                </div>
-
-                <div className='flex flex-col gap-2'>
-                <Label htmlFor={'description'} title={'აღწერა *'}/>
+                <label htmlFor={'description'} className='font-medium text-sm text-customBlack pt-6'>აღწერა *</label>
                 <textarea
                     placeholder='Describe Project'
                     name='description'
@@ -181,17 +185,11 @@ export const Form = () => {
 
                 <div className='grid grid-cols-2 gap-6'>
                     <div className='flex flex-col gap-2'>
-                        <Label htmlFor={'publish_date'} title={"გამოქვეყნების თარიღი *"}/>
-                        <input 
-                        type="date" 
-                        name='publish_date'
-                        id='publish_date'
-                        className='text-sm font-normal border border-border rounded-xl py-3 px-4 bg-inputBG focus:bg-inputBG-focus placeholder-customGray-plc focus:outline-border-focus'
-                        />
+                        <Label htmlFor={'publish_date'} title={"გამოქვეყნების თარიღი *"} type={"date"} />
                     </div>
                     <div className='relative'>
                         <div className='flex flex-col'>
-                        <Label onClick={toggleDropdown} htmlFor={"categories"} title={"კატეგორია *"}/>
+                        <label onClick={toggleDropdown} htmlFor={"categories"} className='font-medium text-sm text-customBlack pt-6'>კატეგორია *</label>
                         </div>
                         <div
                             className={`flex justify-between mt-2 text-sm font-normal rounded-xl ${isDropdownVisible ? 'bg-inputBG-focus border-2 border-border-focus' : 'bg-inputBG border border-border'}`}
@@ -233,14 +231,7 @@ export const Form = () => {
 
                 <div className='grid grid-cols-2 gap-6'>
                     <div className='flex flex-col gap-2'>
-                        <Label htmlFor={'email'} title={"ელ-ფოსტა"}/>
-                        <input 
-                        type="email" 
-                        name='email'
-                        id='email'
-                        placeholder='Example@redberry.ge'
-                        className='text-sm font-normal border border-border rounded-xl py-3 px-4 bg-inputBG focus:bg-inputBG-focus placeholder-customGray-plc focus:outline-border-focus'
-                        />
+                        <Label htmlFor={'email'} title={"ელ-ფოსტა"} type="email" placeholder='Example@redberry.ge'/>
                     </div>
                 </div>
 
