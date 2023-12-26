@@ -91,7 +91,16 @@ export const Login = ({onClose}) => {
                 </h1>
                 <form onSubmit={handleSubmit}>
                     <div className='flex flex-col gap-2'>
-                        <label htmlFor={'email'} className='font-medium text-sm text-customBlack pt-6'>ელ-ფოსტა</label>
+                        <Label 
+                            htmlFor={"email"} 
+                            title={'ელ-ფოსტა'} 
+                            type={"text"}
+                            placeholder={"Example@redberry.ge"} 
+                            value={formData.email} 
+                            onChange={handleChange} 
+                            isValidated={isValidated}
+                        />
+                        {/* <label htmlFor={'email'} className='font-medium text-sm text-customBlack pt-6'>ელ-ფოსტა</label>
                         <input 
                             type="email" 
                             name='email'
@@ -100,7 +109,7 @@ export const Login = ({onClose}) => {
                             value={formData.email}
                             onChange={handleChange}
                             className={`text-sm font-normal border ${isValidated === false ? 'border-border-error' : 'border-border'} rounded-xl py-3 px-4 ${isValidated === false ? 'bg-inputBG-error' : 'bg-inputBG'}  focus:bg-inputBG-focus placeholder-customGray-plc focus:outline-border-focus`}
-                        />
+                        /> */}
                         {
                             error &&
                                 <div className='flex items-center'>

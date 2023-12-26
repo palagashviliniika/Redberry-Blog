@@ -3,23 +3,18 @@ import { DropdownIcon } from '../icons/DropdownIcon'
 import gallery from '../assets/gallery.png'
 import { CloseIcon } from '../icons/CloseIcon'
 import { Label } from '../Components/Label'
-import { ArrowDown } from '../icons/ArrowDown'
-import api from '../api/posts'
-import SingleCategory from './SingleCategory'
+import { Dropdown } from './Dropdown'
 
 export const Form = () => {
     const [isDragOver, setIsDragOver] = useState(false)
     const [selectedFile, setSelectedFile] = useState(null)
-    const [isDropdownVisible, setIsDropdownVisible] = useState(false);
-    const [categories, setCategories] = useState([])
-    const [selectedValues, setSelectedValues] = useState([]);
     const [formData, setFormData] = useState({
         image: "",
         author: "",
         title: "",
         description: "",
         publish_date: "",
-        categories: "",
+        categories: "[]",
         email: ""
     })
 
@@ -28,52 +23,17 @@ export const Form = () => {
         console.log(formData);
     }
 
-    useEffect(() => {
-        const fetchCategories = async () => {
-            try {
-                const response = await api.get('/categories')
-                console.log(response.status);
-                // console.log(response.data.data);
-                setCategories(response.data.data);
-            } catch (err) {
-                console.log(err.response.status);
-                console.log(err.message);
-            }
-        }
+    const handleChange = (e) => {
+        const {name, value} = e.target
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            [name]: value
+        }))
+    }
 
-        fetchCategories()
-    }, [])
-
-    const options = categories.map((category) => {
-        return (
-            <SingleCategory 
-                key={category.id}
-                title={category.title}
-                textColor={category.text_color}
-                bgColor={category.background_color}
-                hover
-                onClick={() => handleOptionClick(category)}
-            />
-        )
-    })
-
-    useEffect(() => {
-        console.log(selectedValues);
-    }, [selectedValues])
-
-    const handleOptionClick = (option) => {
-        // Toggle the selected state of the option
-        const isSelected = selectedValues.includes(option);
-        const updatedValues = isSelected
-          ? selectedValues.filter((value) => value !== option)
-          : [...selectedValues, option];
-    
-        setSelectedValues(updatedValues);
-      };
-
-    const toggleDropdown = () => {
-        setIsDropdownVisible(prevDropdown => !prevDropdown);
-    };
+    // useEffect(() => {
+    //     console.log(formData, 'form data');
+    // }, [formData])
 
     const handleFileChange = (e) => {
         const file = e.target.files[0]
@@ -153,7 +113,7 @@ export const Form = () => {
 
                 <div className='grid grid-cols-2 gap-6'>
                     <div className='flex flex-col gap-2'>
-                        <Label htmlFor={'author'} title={'ავტორი *'} type={"text"} placeholder={'შეიყვნეთ ავტორი'}/>
+                        <Label htmlFor={'author'} title={'ავტორი *'} type={"text"} placeholder={'შეიყვნეთ ავტორი'} value={formData.author} onChange={handleChange}/>
                         <ul className='text-xs text-customGray-plc'>
                             <li>• მინიმუმ 4 სიმბოლო</li>
                             <li>• მინიმუმ ორი სიტყვა</li>
@@ -162,7 +122,7 @@ export const Form = () => {
                     </div>
 
                     <div className='flex flex-col gap-2'>
-                        <Label htmlFor={'title'} title={'სათაური *'} type={"text"} placeholder={'შეიყვნეთ სათაური'}/>
+                        <Label htmlFor={'title'} title={'სათაური *'} type={"text"} placeholder={'შეიყვნეთ სათაური'} value={formData.title} onChange={handleChange}/>
                         <ul className='text-xs text-customGray-plc'>
                             <li>მინიმუმ 4 სიმბოლო</li>
                         </ul>
@@ -176,6 +136,8 @@ export const Form = () => {
                     name='description'
                     id='description'
                     rows={5}
+                    value={formData.description}
+                    onChange={handleChange}
                     className='w-full resize-none text-sm font-normal border border-border rounded-xl py-3 px-4 bg-inputBG focus:bg-inputBG-focus placeholder-customGray-plc focus:outline-border-focus'
                 />
                 <ul className='text-xs text-customGray-plc'>
@@ -185,53 +147,14 @@ export const Form = () => {
 
                 <div className='grid grid-cols-2 gap-6'>
                     <div className='flex flex-col gap-2'>
-                        <Label htmlFor={'publish_date'} title={"გამოქვეყნების თარიღი *"} type={"date"} />
+                        <Label htmlFor={'publish_date'} title={"გამოქვეყნების თარიღი *"} type={"date"} value={formData.publish_date} onChange={handleChange}/>
                     </div>
-                    <div className='relative'>
-                        <div className='flex flex-col'>
-                        <label onClick={toggleDropdown} htmlFor={"categories"} className='font-medium text-sm text-customBlack pt-6'>კატეგორია *</label>
-                        </div>
-                        <div
-                            className={`flex justify-between mt-2 text-sm font-normal rounded-xl ${isDropdownVisible ? 'bg-inputBG-focus border-2 border-border-focus' : 'bg-inputBG border border-border'}`}
-                        >
-                            <div className='text-customGray-plc overflow-x-auto'>
-                                {
-                                    selectedValues.length > 0 ?
-                                    <div className='flex gap-2 p-1.5'>
-                                        {selectedValues.map((value) => (
-                                        <SingleCategory 
-                                            key={value.id}
-                                            title={value.title}
-                                            textColor={value.text_color}
-                                            bgColor={value.background_color}
-                                            remove={() => handleOptionClick(value)}
-                                        />
-                                        ))}
-                                    </div>
-                                    :
-                                    <p onClick={toggleDropdown} className='py-3 px-4'>
-                                        აირჩიეთ კატეგორია
-                                    </p>
-                                }
-                            </div>
-                            <div onClick={toggleDropdown} className='py-3 px-4 rounded-r-xl cursor-pointer'>
-                                <ArrowDown />
-                            </div>
-                        </div>
-
-                        {isDropdownVisible && (
-                            <div className='absolute mt-2 p-4 bg-white border border-border rounded-xl flex flex-wrap max-h-36 overflow-hidden overflow-y-auto gap-2 scrollbar-hide'>
-                                {options}
-                            </div>
-                        )}
-                    </div>
-
-                    
+                    <Dropdown setFormData={setFormData}/>
                 </div>
 
                 <div className='grid grid-cols-2 gap-6'>
                     <div className='flex flex-col gap-2'>
-                        <Label htmlFor={'email'} title={"ელ-ფოსტა"} type="email" placeholder='Example@redberry.ge'/>
+                        <Label htmlFor={'email'} title={"ელ-ფოსტა"} type="email" placeholder='Example@redberry.ge' value={formData.email} onChange={handleChange}/>
                     </div>
                 </div>
 
