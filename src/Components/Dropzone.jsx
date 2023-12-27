@@ -3,103 +3,84 @@ import gallery from '../assets/gallery.png'
 import { CloseIcon } from '../icons/CloseIcon'
 import { DropdownIcon } from '../icons/DropdownIcon'
 
-export const Dropzone = ({setFormData,validate, isValidated}) => {
+export const Dropzone = ({setFormData,validate, isValidated, formData}) => {
     const [isDragOver, setIsDragOver] = useState(false)
-    const [selectedFile, setSelectedFile] = useState('')
+    const [selectedFile, setSelectedFile] = useState(formData.image)
     const [isClicked, setIsClicked] = useState(false)
 
     const handleFileChange = (e) => {
-        const file = e.target.files[0]
-        setSelectedFile(file)
-    }
-
-    const handleDragOver = (e) => {
+        const file = e.target.files[0];
+        setSelectedFile(file);
+        convertAndSaveBlob(file);
+      };
+    
+      const handleDragOver = (e) => {
         e.preventDefault();
         setIsDragOver(true);
-    };
-
-    const handleDragLeave = () => {
+      };
+    
+      const handleDragLeave = () => {
         setIsDragOver(false);
-    };
-
-    const handleDrop = (e) => {
+      };
+    
+      const handleDrop = (e) => {
         e.preventDefault();
         setIsDragOver(false);
-
+    
         const file = e.dataTransfer.files[0];
-        setSelectedFile(file)
-    };
-
-    const handleDeleteFile = () => {
-        // Reset formData.image to empty
+        setSelectedFile(file);
+        convertAndSaveBlob(file);
+      };
+    
+      const handleDeleteFile = () => {
+        // Reset formData.image to null
         setFormData((prevFormData) => ({
           ...prevFormData,
-          image: "",
+          image: null,
         }));
-        setSelectedFile('');
+        setSelectedFile(null);
+        localStorage.removeItem('imageBlob');
+        localStorage.removeItem('fileName');
       };
-
-    useEffect(() => {
-        setIsClicked(true)
-        if (isClicked) validate(selectedFile)
-
-        setFormData(prevFormData => ({
-            ...prevFormData,
-            image: selectedFile
-        }))
-    }, [selectedFile])
     
-    // const encodeFileToBinaryString = (file) => {
-    //     const fileReader = new FileReader();
+      const convertAndSaveBlob = (file) => {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          const arrayBuffer = event.target.result;
       
-    //     fileReader.onload = (event) => {
-    //       // Convert Base64 data to binary string
-    //       const base64String = event.target.result.split(',')[1];
-    //       const binaryString = atob(base64String);
+          // Extract the MIME type from the original file
+          const mimeType = file.type;
       
-    //       // Set binary string to formData.image
-    //       setFormData((prevFormData) => ({
-    //         ...prevFormData,
-    //         image: binaryString,
-    //       }));
+          // Create the Blob object with the extracted MIME type
+          const blob = new Blob([arrayBuffer], { type: mimeType });
       
-    //       setSelectedFile(file);
-    //     };
+          setFormData((prevFormData) => ({
+            ...prevFormData,
+            image: blob,
+          }));
       
-    //     // Read file as Data URL (Base64)
-    //     fileReader.readAsDataURL(file);
-    //   };
+          // Save the blob data, type, and name separately in localStorage
+          localStorage.setItem('imageBlob', JSON.stringify({
+            data: Array.from(new Uint8Array(arrayBuffer)),
+            type: mimeType,
+          }));
+          localStorage.setItem('fileName', file.name)
+        };
+        reader.readAsArrayBuffer(file);
+      };
       
-
-    // const encodeFileToBlob = (file) => {
-    //     const fileReader = new FileReader();
       
-    //     fileReader.onload = (event) => {
-    //       // Convert Base64 data to binary string
-    //       const base64String = event.target.result.split(',')[1];
-    //       const binaryString = atob(base64String);
-      
-    //       // Create Uint8Array from binary string
-    //       const uint8Array = new Uint8Array(binaryString.length);
-    //       for (let i = 0; i < binaryString.length; i++) {
-    //         uint8Array[i] = binaryString.charCodeAt(i);
-    //       }
-      
-    //       // Create Blob from Uint8Array
-    //       const blob = new Blob([uint8Array], { type: file.type });
-      
-    //       // Set Blob to formData.image
-    //       setFormData((prevFormData) => ({
-    //         ...prevFormData,
-    //         image: blob,
-    //       }));
-      
-    //       setSelectedFile(file);
-    //     };
-      
-    //     // Read file as Data URL (Base64)
-    //     fileReader.readAsDataURL(file);
-    //   };
+    
+      useEffect(() => {
+        setIsClicked(true);
+        if (isClicked) validate(selectedFile);
+        // console.log(selectedFile, "selected");
+    
+        // setFormData((prevFormData) => ({
+        //   ...prevFormData,
+        //   image: selectedFile,
+        // }));
+      }, [selectedFile]);
       
     return (
         <>
@@ -110,12 +91,12 @@ export const Dropzone = ({setFormData,validate, isValidated}) => {
                 ატვირთეთ ფოტო
             </label>
             {
-                selectedFile ? (
+                formData.image ? (
                     <div className='bg-customGray-uploaded p-4 rounded-xl flex items-center justify-between mt-2'>
                         <div className='flex items-center gap-3'>
                             <img src={gallery} alt="" />
                             <p className='text-sm'>
-                            {selectedFile.name}
+                            {localStorage.getItem('fileName')}
                             </p>
                         </div>
                         <div className='cursor-pointer' onClick={handleDeleteFile}>

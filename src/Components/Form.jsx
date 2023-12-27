@@ -6,15 +6,19 @@ import { ErrorMessage } from './ErrorMessage'
 
 export const Form = () => {
     const [isEmailClicked, setIsEmailClicked] = useState(false)
-    const [formData, setFormData] = useState({
-        image: "",
-        author: "",
-        title: "",
-        description: "",
-        publish_date: "",
-        categories: "[]",
-        email: ""
-    })
+    const [formData, setFormData] = useState(() => {
+        const storedFormData = localStorage.getItem('formData');
+        return storedFormData ? JSON.parse(storedFormData) : {
+            image: null,
+            author: '',
+            title: '',
+            description: '',
+            publish_date: '',
+            categories: '[]',
+            email: ''
+        };
+    });
+
     const [formErrors, setFormErrors] = useState({
         author: null,
         title: null,
@@ -157,21 +161,43 @@ export const Form = () => {
         }));
       };
 
-      const isFormValid = () => {
+    const isFormValid = () => {
         // Check if all form fields are valid
         return Object.values(formErrors).every((error) => error === "" || (Array.isArray(error) && error.length === 0));
-      };
-      
+    };
       
 
-    // useEffect(() => {
-    //     // console.log(formData, 'form data');
-    //     console.log(formErrors);
-    // }, [formData])
+    useEffect(() => {
+        localStorage.setItem('formData', JSON.stringify(formData));
+    }, [formData]);
+      
+
+    useEffect(() => {
+        console.log(formData, 'form data');
+        // console.log(formErrors);
+    }, [formData])
+
+    useEffect(() => {
+        const storedImageBlob = localStorage.getItem('imageBlob');
+        if (storedImageBlob) {
+          // Parse the stored object containing data, type, and name
+          const { data, type, name } = JSON.parse(storedImageBlob);
+      
+          // Reconstruct the blob from the array buffer
+          const arrayBuffer = new Uint8Array(data).buffer;
+          const blob = new Blob([arrayBuffer], { type });
+      
+          // Set the blob and file name in formData.image
+          setFormData((prevFormData) => ({
+            ...prevFormData,
+            image: blob,
+          }));
+        }
+      }, []);
 
     return (
         <form onSubmit={handleSubmit} className='pt-10'>
-                <Dropzone setFormData={setFormData} validate={validateImage} isValidated={formErrors.image}/>
+                <Dropzone setFormData={setFormData} validate={validateImage} isValidated={formErrors.image} formData={formData}/>
                 {
                     formErrors.image && 
                         <div className='mt-2'>
