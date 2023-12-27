@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { DropdownIcon } from '../icons/DropdownIcon'
-import gallery from '../assets/gallery.png'
-import { CloseIcon } from '../icons/CloseIcon'
 import { Label } from '../Components/Label'
 import { Dropdown } from './Dropdown'
+import { Dropzone } from './Dropzone'
 
 export const Form = () => {
-    const [isDragOver, setIsDragOver] = useState(false)
-    const [selectedFile, setSelectedFile] = useState(null)
     const [formData, setFormData] = useState({
         image: "",
         author: "",
@@ -17,6 +13,15 @@ export const Form = () => {
         categories: "[]",
         email: ""
     })
+    const [formErrors, setFormErrors] = useState({
+        author: [],
+        title: "",
+        description: "",
+        publish_date: "",
+        categories: "",
+        email: "",
+        image: "",
+      });
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -25,92 +30,139 @@ export const Form = () => {
 
     const handleChange = (e) => {
         const {name, value} = e.target
+        validateField(name, value)
         setFormData((prevFormData) => ({
             ...prevFormData,
             [name]: value
         }))
     }
 
-    // useEffect(() => {
-    //     console.log(formData, 'form data');
-    // }, [formData])
+    // Validation Logic
 
-    const handleFileChange = (e) => {
-        const file = e.target.files[0]
-        setSelectedFile(file)
+    const validateField = (fieldName, value) => {
+        switch (fieldName) {
+          case "author":
+            validateAuthor(value);
+            break;
+          case "title":
+            validateTitle(value);
+            break;
+          case "description":
+            validateDescription(value);
+            break;
+          case "publish_date":
+            validatePublishDate(value);
+            break;
+          case "email":
+            validateEmail(value);
+            break;
+        }
+      };
+
+      const validateAuthor = (value) => {
+        const rules = [
+            {
+                condition: !value.trim(),
+                message: "Author should not be empty",
+            },
+            {
+                condition: value.length < 2,
+                message: "Author should have at least 2 characters",
+            },
+            {
+                condition: value.trim().split(/\s+/).length < 2,
+                message: "Author should have at least 2 words",
+            },
+            {
+                condition: !/^[\u10A0-\u10EA\s]+$/.test(value),
+                message: "Author should only have Georgian letters",
+            },
+        ];
+    
+        const errors = rules.filter((rule) => rule.condition).map((rule) => rule.message);
+    
+        setFormErrors((prevFormErrors) => ({
+            ...prevFormErrors,
+            author: errors,
+        }));
+    };
+
+    const validateTitle = (value) => {
+        let errors = ""
+        if (value.length < 4) errors = "Title should have at least 4 characters"
+    
+        setFormErrors((prevFormErrors) => ({
+            ...prevFormErrors,
+            title: errors,
+        }));
     }
 
-    const handleDragOver = (e) => {
-        e.preventDefault();
-        setIsDragOver(true);
-    };
+    const validateDescription = (value) => {
+        let errors = ""
+        if (value.length < 2) errors = "Description should have at least 2 characters"
 
-    const handleDragLeave = () => {
-        setIsDragOver(false);
-    };
+        setFormErrors((prevFormErrors) => ({
+            ...prevFormErrors,
+            description: errors,
+        }));
+    }
+    
+    const validatePublishDate = (value) => {
+        console.log(value, "date");
+        let errors = ""
+        if (!value.trim()) errors = "Publish date should not be empty"
+        
+        setFormErrors((prevFormErrors) => ({
+            ...prevFormErrors,
+            publish_date: errors
+        }))
+    }
 
-    const handleDrop = (e) => {
-        e.preventDefault();
-        setIsDragOver(false);
+    const validateCategories = (value) => {
+        let errors = ""
+        if (value === "[]") errors = "Categories should not be empty"
 
-        const file = e.dataTransfer.files[0];
-        setSelectedFile(file)
-    };
+        setFormErrors((prevFormErrors) => ({
+            ...prevFormErrors,
+            categories: errors
+        }))
+    }
 
-    const handleDeleteFile = () => {
-        setSelectedFile(null);
-    };
+    const validateImage = (value) => {
+        // console.log(value, "image");
+        let errors = ""
+        if (!value) errors = "Image should not be empty"
+
+        setFormErrors((prevFormErrors) => ({
+            ...prevFormErrors,
+            image: errors
+        }))
+    }
+
+    const validateEmail = (value) => {
+        const redberryRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@redberry.ge$/;
+        let errors = "";
+      
+        // Rule: Email should match the redberryRegex pattern
+        if (value.trim() && !redberryRegex.test(value)) {
+          errors = "მეილი უნდა მთავრდებოდეს @redberry.ge-ით";
+        }
+      
+        setFormErrors((prevFormErrors) => ({
+          ...prevFormErrors,
+          email: errors,
+        }));
+      };
+      
+
+    useEffect(() => {
+        // console.log(formData, 'form data');
+        console.log(formErrors);
+    }, [formData])
 
     return (
         <form onSubmit={handleSubmit} className='pt-10'>
-                <label 
-                    htmlFor={"image"}
-                    className='font-medium text-sm text-customBlack pt-6'
-                >
-                    ატვირთეთ ფოტო
-                </label>
-                {
-                selectedFile ? (
-                    <div className='bg-customGray-uploaded p-4 rounded-xl flex items-center justify-between mt-2'>
-                        <div className='flex items-center gap-3'>
-                            <img src={gallery} alt="" />
-                            <p className='text-sm'>
-                            {selectedFile.name}
-                            </p>
-                        </div>
-                        <div className='cursor-pointer' onClick={handleDeleteFile}>
-                            <CloseIcon />
-                        </div>
-                    </div>
-                ) : (
-                    <div 
-                        className={`flex items-center justify-center w-full bg-imgInput hover:bg-imgInput-hover ${isDragOver && 'bg-imgInput-hover' } mt-2`}
-                        onDragOver={handleDragOver}  
-                        onDragLeave={handleDragLeave}
-                        onDrop={handleDrop}
-                    >
-                        <label 
-                            htmlFor="image" 
-                            className='flex flex-col items-center justify-center w-full h-[180px] border border-textGray border-dashed rounded-lg cursor-pointer'
-                        >
-                            <div className='flex flex-col items-center justify-center gap-6 py-12'>
-                            <DropdownIcon />
-                                <p className='text-sm font-normal'>
-                                    {isDragOver
-                                        ? 'ჩააგდეთ ფაილი'
-                                        : <span>
-                                            ჩააგდეთ ფაილი აქ ან{' '}
-                                            <span className='font-medium underline decoration-solid'>აირჩიეთ ფაილი</span>
-                                        </span>
-                                    }
-                                </p>
-                            </div>
-                            <input id='image' type="file" className='hidden' onChange={handleFileChange}/>
-                        </label>
-                    </div>
-                )
-                }
-
+                <Dropzone setFormData={setFormData} validate={validateImage}/>
                 <div className='grid grid-cols-2 gap-6'>
                     <div className='flex flex-col gap-2'>
                         <Label htmlFor={'author'} title={'ავტორი *'} type={"text"} placeholder={'შეიყვნეთ ავტორი'} value={formData.author} onChange={handleChange}/>
@@ -149,7 +201,7 @@ export const Form = () => {
                     <div className='flex flex-col gap-2'>
                         <Label htmlFor={'publish_date'} title={"გამოქვეყნების თარიღი *"} type={"date"} value={formData.publish_date} onChange={handleChange}/>
                     </div>
-                    <Dropdown setFormData={setFormData}/>
+                    <Dropdown setFormData={setFormData} validate={validateCategories}/>
                 </div>
 
                 <div className='grid grid-cols-2 gap-6'>

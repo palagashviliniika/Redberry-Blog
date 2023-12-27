@@ -3,10 +3,11 @@ import api from '../api/posts'
 import SingleCategory from './SingleCategory';
 import { ArrowDown } from '../icons/ArrowDown';
 
-export const Dropdown = ({setFormData}) => {
+export const Dropdown = ({setFormData, validate}) => {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const [categories, setCategories] = useState([])
   const [selectedValues, setSelectedValues] = useState([]);
+  const [isClicked, setIsClicked] = useState(false)
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -39,6 +40,7 @@ export const Dropdown = ({setFormData}) => {
 
   useEffect(() => {
     const selectedCategories = JSON.stringify(selectedValues.map(value => value.id))
+    if (isClicked) validate(selectedCategories)
     
     setFormData((prevFormData) => ({
         ...prevFormData,
@@ -59,6 +61,7 @@ export const Dropdown = ({setFormData}) => {
 
   const toggleDropdown = () => {
       setIsDropdownVisible(prevDropdown => !prevDropdown);
+      setIsClicked(true)
   };
 
   return (
