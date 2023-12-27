@@ -14,13 +14,13 @@ export const Form = () => {
         email: ""
     })
     const [formErrors, setFormErrors] = useState({
-        author: [],
-        title: "",
-        description: "",
-        publish_date: "",
-        categories: "",
-        email: "",
-        image: "",
+        author: null,
+        title: null,
+        description: null,
+        publish_date: null,
+        categories: null,
+        email: null,
+        image: null,
       });
 
     const handleSubmit = (e) => {
@@ -155,17 +155,17 @@ export const Form = () => {
       };
       
 
-    useEffect(() => {
-        // console.log(formData, 'form data');
-        console.log(formErrors);
-    }, [formData])
+    // useEffect(() => {
+    //     // console.log(formData, 'form data');
+    //     console.log(formErrors);
+    // }, [formData])
 
     return (
         <form onSubmit={handleSubmit} className='pt-10'>
-                <Dropzone setFormData={setFormData} validate={validateImage}/>
+                <Dropzone setFormData={setFormData} validate={validateImage} isValidated={formErrors.image}/>
                 <div className='grid grid-cols-2 gap-6'>
                     <div className='flex flex-col gap-2'>
-                        <Label htmlFor={'author'} title={'ავტორი *'} type={"text"} placeholder={'შეიყვნეთ ავტორი'} value={formData.author} onChange={handleChange}/>
+                        <Label htmlFor={'author'} title={'ავტორი *'} type={"text"} placeholder={'შეიყვნეთ ავტორი'} value={formData.author} onChange={handleChange} isValidated={formErrors.author}/>
                         <ul className='text-xs text-customGray-plc'>
                             <li>• მინიმუმ 4 სიმბოლო</li>
                             <li>• მინიმუმ ორი სიტყვა</li>
@@ -174,7 +174,7 @@ export const Form = () => {
                     </div>
 
                     <div className='flex flex-col gap-2'>
-                        <Label htmlFor={'title'} title={'სათაური *'} type={"text"} placeholder={'შეიყვნეთ სათაური'} value={formData.title} onChange={handleChange}/>
+                        <Label htmlFor={'title'} title={'სათაური *'} type={"text"} placeholder={'შეიყვნეთ სათაური'} value={formData.title} onChange={handleChange} isValidated={formErrors.title}/>
                         <ul className='text-xs text-customGray-plc'>
                             <li>მინიმუმ 4 სიმბოლო</li>
                         </ul>
@@ -190,8 +190,8 @@ export const Form = () => {
                     rows={5}
                     value={formData.description}
                     onChange={handleChange}
-                    className='w-full resize-none text-sm font-normal border border-border rounded-xl py-3 px-4 bg-inputBG focus:bg-inputBG-focus placeholder-customGray-plc focus:outline-border-focus'
-                />
+                    className={`text-sm font-normal border ${formErrors.description === null ? 'border-border bg-inputBG' : formErrors.description === "" || formErrors.description === 0 ? 'border-border-correct bg-inputBG-correct' : 'border-border-error bg-inputBG-error'} rounded-xl py-3 px-4 focus:bg-inputBG-focus placeholder-customGray-plc focus:outline-border-focus`}
+                    />
                 <ul className='text-xs text-customGray-plc'>
                     <li>მინიმუმ 2 სიმბოლო</li>
                 </ul>
@@ -199,14 +199,14 @@ export const Form = () => {
 
                 <div className='grid grid-cols-2 gap-6'>
                     <div className='flex flex-col gap-2'>
-                        <Label htmlFor={'publish_date'} title={"გამოქვეყნების თარიღი *"} type={"date"} value={formData.publish_date} onChange={handleChange}/>
+                        <Label htmlFor={'publish_date'} title={"გამოქვეყნების თარიღი *"} type={"date"} value={formData.publish_date} onChange={handleChange} isValidated={formErrors.publish_date}/>
                     </div>
-                    <Dropdown setFormData={setFormData} validate={validateCategories}/>
+                    <Dropdown setFormData={setFormData} validate={validateCategories} isValidated={formErrors.categories}/>
                 </div>
 
                 <div className='grid grid-cols-2 gap-6'>
                     <div className='flex flex-col gap-2'>
-                        <Label htmlFor={'email'} title={"ელ-ფოსტა"} type="email" placeholder='Example@redberry.ge' value={formData.email} onChange={handleChange}/>
+                        <Label htmlFor={'email'} title={"ელ-ფოსტა"} type="email" placeholder='Example@redberry.ge' value={formData.email} onChange={handleChange} isValidated={formErrors.email}/>
                     </div>
                 </div>
 

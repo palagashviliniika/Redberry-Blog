@@ -3,7 +3,7 @@ import api from '../api/posts'
 import SingleCategory from './SingleCategory';
 import { ArrowDown } from '../icons/ArrowDown';
 
-export const Dropdown = ({setFormData, validate}) => {
+export const Dropdown = ({setFormData, validate, isValidated}) => {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const [categories, setCategories] = useState([])
   const [selectedValues, setSelectedValues] = useState([]);
@@ -70,7 +70,7 @@ export const Dropdown = ({setFormData, validate}) => {
         <label onClick={toggleDropdown} htmlFor={"categories"} className='font-medium text-sm text-customBlack pt-6'>კატეგორია *</label>
         </div>
         <div
-            className={`flex justify-between mt-2 text-sm font-normal rounded-xl ${isDropdownVisible ? 'bg-inputBG-focus border-2 border-border-focus' : 'bg-inputBG border border-border'}`}
+            className={`flex justify-between mt-2 text-sm font-normal rounded-xl border ${isDropdownVisible && 'bg-inputBG-focus border-2 border-border-focus'} ${isValidated === null ? 'border-border bg-inputBG' : (isValidated === "" || isValidated.length === 0) && !isDropdownVisible ? 'border-border-correct bg-inputBG-correct' : 'border-border-error bg-inputBG-error'}`}
         >
             <div className='text-customGray-plc overflow-x-auto'>
                 {

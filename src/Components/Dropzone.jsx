@@ -3,7 +3,7 @@ import gallery from '../assets/gallery.png'
 import { CloseIcon } from '../icons/CloseIcon'
 import { DropdownIcon } from '../icons/DropdownIcon'
 
-export const Dropzone = ({setFormData,validate}) => {
+export const Dropzone = ({setFormData,validate, isValidated}) => {
     const [isDragOver, setIsDragOver] = useState(false)
     const [selectedFile, setSelectedFile] = useState('')
     const [isClicked, setIsClicked] = useState(false)
@@ -124,14 +124,14 @@ export const Dropzone = ({setFormData,validate}) => {
                     </div>
                 ) : (
                     <div 
-                        className={`flex items-center justify-center w-full bg-imgInput hover:bg-imgInput-hover ${isDragOver && 'bg-imgInput-hover' } mt-2`}
+                        className={`flex items-center justify-center w-full ${isValidated === null ? 'bg-imgInput' : "bg-inputBG-error"}  hover:bg-imgInput-hover ${isDragOver && 'bg-imgInput-hover' } mt-2`}
                         onDragOver={handleDragOver}  
                         onDragLeave={handleDragLeave}
                         onDrop={handleDrop}
                     >
                         <label 
                             htmlFor="image" 
-                            className='flex flex-col items-center justify-center w-full h-[180px] border border-textGray border-dashed rounded-lg cursor-pointer'
+                            className={`flex flex-col items-center justify-center w-full h-[180px] border ${isValidated === null ? 'border-textGray' : "border-border-error"}  border-dashed rounded-lg cursor-pointer`}
                         >
                             <div className='flex flex-col items-center justify-center gap-6 py-12'>
                             <DropdownIcon />
