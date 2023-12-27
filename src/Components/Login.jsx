@@ -4,6 +4,7 @@ import api from '../api/posts'
 import { useAuth } from '../Contexts/AuthContext'
 import { Success } from './Success'
 import { Label } from './Label'
+import { ErrorMessage } from './ErrorMessage'
 
 export const Login = ({onClose}) => {
     const { isLoggedIn, login, logout, isAuthenticated } = useAuth();
@@ -112,12 +113,7 @@ export const Login = ({onClose}) => {
                         />
                         {
                             error &&
-                                <div className='flex items-center'>
-                                    <img src={infoCircle} alt="" />
-                                    <p className='pl-2 text-customRed font-normal text-xs'>
-                                        {error}
-                                    </p>
-                                </div>
+                                <ErrorMessage error={error}/>
                         }
                         <button
                             type='submit'

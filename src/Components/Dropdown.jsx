@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react'
 import api from '../api/posts'
 import SingleCategory from './SingleCategory';
 import { ArrowDown } from '../icons/ArrowDown';
+import { ErrorMessage } from './ErrorMessage';
 
 export const Dropdown = ({setFormData, validate, isValidated}) => {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
@@ -96,6 +97,13 @@ export const Dropdown = ({setFormData, validate, isValidated}) => {
                 <ArrowDown />
             </div>
         </div>
+
+        {
+            isValidated && 
+                <div className='mt-2'>
+                    <ErrorMessage error={isValidated}/>
+                </div>
+        }
 
         {isDropdownVisible && (
             <div className='absolute mt-2 p-4 bg-white border border-border rounded-xl flex flex-wrap max-h-36 overflow-hidden overflow-y-auto gap-2 scrollbar-hide'>
