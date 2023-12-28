@@ -5,11 +5,17 @@ import Categories from '../Components/Categories';
 import { Blogs } from '../Components/Blogs';
 
 const Home = () => {
-    const [filteredCategories, setFilteredCategories] = useState([])
+    const [filteredCategories, setFilteredCategories] = useState(() => {
+        const storedFilteredCategories = localStorage.getItem('filteredCategories')
+        return storedFilteredCategories ? JSON.parse(storedFilteredCategories) : []
+    })
 
     // useEffect(() => {
     //     console.log(filteredCategories);
     // }, [filteredCategories])
+    useEffect(() => {
+        localStorage.setItem('filteredCategories', JSON.stringify(filteredCategories));
+      }, [filteredCategories]);
 
     return (
         <div>

@@ -34,7 +34,6 @@ export default function Categories({filteredCategories, setFilteredCategories}) 
 
     const categoryItems = categories.map((category) => {
         const selected = filteredCategories.includes(category.id)
-        console.log(selected);
 
         return (
             <SingleCategory 

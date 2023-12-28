@@ -23,7 +23,6 @@ export const Blogs = ({filteredCategories}) => {
   }, [])
 
 useEffect(() => {
-  console.log(filteredCategories);
   const newFilteredBlogs = filteredCategories.length > 0
     ? blogs.filter((blog) => blog.categories.some((category) => filteredCategories.includes(category.id)))
     : blogs;
