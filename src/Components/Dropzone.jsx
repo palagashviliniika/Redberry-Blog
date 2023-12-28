@@ -75,7 +75,7 @@ export const Dropzone = ({setFormData,validate, isValidated, formData}) => {
       useEffect(() => {
         setIsClicked(true);
         if (isClicked) validate(selectedFile);
-        console.log(selectedFile, "selected");
+        // console.log(selectedFile, "selected");
     
         // setFormData((prevFormData) => ({
         //   ...prevFormData,

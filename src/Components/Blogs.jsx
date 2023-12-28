@@ -27,12 +27,7 @@ useEffect(() => {
     ? blogs.filter((blog) => blog.categories.some((category) => filteredCategories.includes(category.id)))
     : blogs;
 
-  // Perform some action with the filteredBlogs array
-  // For example, update state or log it
   setFilteredBlogs(newFilteredBlogs)
-
-  // If you want to update a state with the filtered blogs, you might do something like this:
-  // setFilteredBlogs(filteredBlogs);
 
 }, [filteredCategories, blogs]);
 

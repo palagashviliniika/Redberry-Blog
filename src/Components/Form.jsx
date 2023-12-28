@@ -48,9 +48,14 @@ export const Form = () => {
         for (const entry of newFormData.entries()) {
             console.log(entry[0], entry[1]);
           }
+
         try {
             const response = await authenticatedApi.post('/blogs', newFormData)
             console.log(response.status);
+            localStorage.removeItem('formData');
+            localStorage.removeItem('fileName');
+            localStorage.removeItem('imageBlob');
+            localStorage.removeItem('selectedValues');
         } catch (err) {
             console.log(err.response.status);
             console.log(err.message);
@@ -213,10 +218,10 @@ export const Form = () => {
         }
     }, []);
     
-    // useEffect(() => {
-    //     console.log(formData, 'form data');
-    //     // console.log(formErrors);
-    // }, [formData])
+    useEffect(() => {
+        console.log(formData, 'form data');
+        // console.log(formErrors);
+    }, [formData])
 
     return (
         <form onSubmit={handleSubmit} className='pt-10'>
@@ -271,7 +276,7 @@ export const Form = () => {
                     <div className='flex flex-col gap-2'>
                         <Label htmlFor={'publish_date'} title={"გამოქვეყნების თარიღი *"} type={"date"} value={formData.publish_date} onChange={handleChange} isValidated={formErrors.publish_date} showErrors/>
                     </div>
-                    <Dropdown setFormData={setFormData} validate={validateCategories} isValidated={formErrors.categories}/>
+                    <Dropdown setFormData={setFormData} validate={validateCategories} isValidated={formErrors.categories} formData={formData}/>
                 </div>
 
                 <div className='grid grid-cols-2 gap-6'>

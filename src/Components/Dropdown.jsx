@@ -4,11 +4,14 @@ import SingleCategory from './SingleCategory';
 import { ArrowDown } from '../icons/ArrowDown';
 import { ErrorMessage } from './ErrorMessage';
 
-export const Dropdown = ({setFormData, validate, isValidated}) => {
+export const Dropdown = ({setFormData, validate, isValidated, formData}) => {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const [categories, setCategories] = useState([])
-  const [selectedValues, setSelectedValues] = useState([]);
   const [isClicked, setIsClicked] = useState(false)
+  const [selectedValues, setSelectedValues] = useState(() => {
+    const storedSelectedValues = localStorage.getItem('selectedValues')
+    return storedSelectedValues ? JSON.parse(storedSelectedValues) : []
+  });
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -48,6 +51,8 @@ export const Dropdown = ({setFormData, validate, isValidated}) => {
         categories: selectedCategories
     }))
 
+    localStorage.setItem('selectedValues', JSON.stringify(selectedValues));
+    
   }, [selectedValues])
 
   const handleOptionClick = (option) => {
