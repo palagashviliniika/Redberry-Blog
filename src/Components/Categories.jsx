@@ -3,8 +3,18 @@ import SingleCategory from './SingleCategory'
 import api from '../api/posts'
 import { useHorizontalScroll } from '../hooks/useSideScroll'
 
-export default function Categories() {
+export default function Categories({filteredCategories, setFilteredCategories}) {
     const [categories, setCategories] = useState([])
+
+    const handleCategoryClick = (categoryId) => {
+        setFilteredCategories((prevCategories) => {
+            if (prevCategories.includes(categoryId)) {
+                return prevCategories.filter((id) => id !== categoryId);
+            } else {
+                return [...prevCategories, categoryId]
+            }
+        })
+    }
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -23,6 +33,9 @@ export default function Categories() {
     }, [])
 
     const categoryItems = categories.map((category) => {
+        const selected = filteredCategories.includes(category.id)
+        console.log(selected);
+
         return (
             <SingleCategory 
                 key={category.id}
@@ -30,6 +43,8 @@ export default function Categories() {
                 textColor={category.text_color}
                 bgColor={category.background_color}
                 hover
+                onClick={() => handleCategoryClick(category.id)}
+                selected={selected}
             />
         )
     })

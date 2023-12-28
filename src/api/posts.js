@@ -16,9 +16,9 @@ const api = axios.create({
 export const authenticatedApi = axios.create({
   baseURL: 'https://api.blog.redberryinternship.ge/api',
   headers: {
-    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'Content-Type': 'multipart/form-data',
     Authorization: `Bearer ${bearerToken}`,
-    // Add other default headers if needed
   },
 });
 

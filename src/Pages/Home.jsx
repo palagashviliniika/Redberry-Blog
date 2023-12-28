@@ -1,10 +1,16 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from '../Components/Navbar';
 import Landing from '../Components/Landing';
 import Categories from '../Components/Categories';
 import { Blogs } from '../Components/Blogs';
 
 const Home = () => {
+    const [filteredCategories, setFilteredCategories] = useState([])
+
+    // useEffect(() => {
+    //     console.log(filteredCategories);
+    // }, [filteredCategories])
+
     return (
         <div>
             <Navbar btn/>
@@ -12,9 +18,9 @@ const Home = () => {
                 ბლოგი
             </Landing>
             <div className='flex justify-center'>
-                <Categories />
+                <Categories filteredCategories={filteredCategories} setFilteredCategories={setFilteredCategories}/>
             </div>
-            <Blogs />
+            <Blogs filteredCategories={filteredCategories}/>
         </div>
     );
 };

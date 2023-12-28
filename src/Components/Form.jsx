@@ -3,6 +3,7 @@ import { Label } from '../Components/Label'
 import { Dropdown } from './Dropdown'
 import { Dropzone } from './Dropzone'
 import { ErrorMessage } from './ErrorMessage'
+import { authenticatedApi } from '../api/posts'
 
 export const Form = () => {
     const [isEmailClicked, setIsEmailClicked] = useState(false)
@@ -29,9 +30,32 @@ export const Form = () => {
         image: null,
       });
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        console.log(formData);
+        // console.log(formData);
+        
+        const newFormData = new FormData();
+        
+        // Iterate through the properties of the existing formData
+        for (const key in formData) {
+            // Check if the property is not inherited from the prototype chain
+            if (formData.hasOwnProperty(key)) {
+                // Append the property to the new FormData
+                newFormData.append(key, formData[key]);
+            }
+        }
+        
+        for (const entry of newFormData.entries()) {
+            console.log(entry[0], entry[1]);
+          }
+        try {
+            const response = await authenticatedApi.post('/blogs', newFormData)
+            console.log(response.status);
+        } catch (err) {
+            console.log(err.response.status);
+            console.log(err.message);
+        }
+
     }
 
     const handleChange = (e) => {
@@ -171,29 +195,28 @@ export const Form = () => {
         localStorage.setItem('formData', JSON.stringify(formData));
     }, [formData]);
       
-
-    useEffect(() => {
-        console.log(formData, 'form data');
-        // console.log(formErrors);
-    }, [formData])
-
     useEffect(() => {
         const storedImageBlob = localStorage.getItem('imageBlob');
         if (storedImageBlob) {
-          // Parse the stored object containing data, type, and name
-          const { data, type, name } = JSON.parse(storedImageBlob);
-      
-          // Reconstruct the blob from the array buffer
-          const arrayBuffer = new Uint8Array(data).buffer;
-          const blob = new Blob([arrayBuffer], { type });
-      
-          // Set the blob and file name in formData.image
-          setFormData((prevFormData) => ({
-            ...prevFormData,
-            image: blob,
-          }));
+            // Parse the stored object containing data, type, and name
+            const { data, type, name } = JSON.parse(storedImageBlob);
+            
+            // Reconstruct the blob from the array buffer
+            const arrayBuffer = new Uint8Array(data).buffer;
+            const blob = new Blob([arrayBuffer], { type });
+            
+            // Set the blob and file name in formData.image
+            setFormData((prevFormData) => ({
+                ...prevFormData,
+                image: blob,
+            }));
         }
-      }, []);
+    }, []);
+    
+    // useEffect(() => {
+    //     console.log(formData, 'form data');
+    //     // console.log(formErrors);
+    // }, [formData])
 
     return (
         <form onSubmit={handleSubmit} className='pt-10'>
@@ -218,9 +241,6 @@ export const Form = () => {
                                 • მხოლოდ ქართული სიმბოლოები
                             </li>
                         </ul>
-
-
-
                     </div>
 
                     <div className='flex flex-col gap-2'>

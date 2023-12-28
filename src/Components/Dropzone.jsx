@@ -11,7 +11,7 @@ export const Dropzone = ({setFormData,validate, isValidated, formData}) => {
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         setSelectedFile(file);
-        convertAndSaveBlob(file);
+        convertAndSaveBlob(file)
       };
     
       const handleDragOver = (e) => {
@@ -28,9 +28,10 @@ export const Dropzone = ({setFormData,validate, isValidated, formData}) => {
         setIsDragOver(false);
     
         const file = e.dataTransfer.files[0];
+    
         setSelectedFile(file);
-        convertAndSaveBlob(file);
-      };
+        convertAndSaveBlob(file)
+    };
     
       const handleDeleteFile = () => {
         // Reset formData.image to null
@@ -74,7 +75,7 @@ export const Dropzone = ({setFormData,validate, isValidated, formData}) => {
       useEffect(() => {
         setIsClicked(true);
         if (isClicked) validate(selectedFile);
-        // console.log(selectedFile, "selected");
+        console.log(selectedFile, "selected");
     
         // setFormData((prevFormData) => ({
         //   ...prevFormData,

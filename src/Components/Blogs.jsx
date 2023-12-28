@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { BlogOverview } from './BlogOverview'
 import { authenticatedApi } from '../api/posts'
 
-export const Blogs = () => {
+export const Blogs = ({filteredCategories}) => {
   const [blogs, setBlogs] = useState([])
+  const [filteredBlogs, setFilteredBlogs] = useState([]);
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -21,7 +22,23 @@ export const Blogs = () => {
     fetchBlogs()
   }, [])
 
-  const blogItems = blogs.map((blog) => {
+useEffect(() => {
+  console.log(filteredCategories);
+  const newFilteredBlogs = filteredCategories.length > 0
+    ? blogs.filter((blog) => blog.categories.some((category) => filteredCategories.includes(category.id)))
+    : blogs;
+
+  // Perform some action with the filteredBlogs array
+  // For example, update state or log it
+  setFilteredBlogs(newFilteredBlogs)
+
+  // If you want to update a state with the filtered blogs, you might do something like this:
+  // setFilteredBlogs(filteredBlogs);
+
+}, [filteredCategories, blogs]);
+
+
+  const blogItems = filteredBlogs.map((blog) => {
     return (
       <BlogOverview 
         key={blog.id}

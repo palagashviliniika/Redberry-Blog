@@ -1,10 +1,11 @@
 import React from 'react'
 import { RemoveIcon } from '../icons/RemoveIcon';
 
-export default function SingleCategory({title, textColor, bgColor, hover, onClick, remove}) {
-    const dynamicStyles = {
+export default function SingleCategory({title, textColor, bgColor, hover, onClick, remove, selected}) {
+      const dynamicStyles = {
         backgroundColor: bgColor,
         color: textColor,
+        border: selected ? '1px solid #000000' : `1px solid ${bgColor}`
       };
     
       return (
