@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/Redberry-Blog/static/css/main.c9fbb723.css",
+    "main.js": "/Redberry-Blog/static/js/main.8482af1a.js",
+    "static/js/787.dcf77665.chunk.js": "/Redberry-Blog/static/js/787.dcf77665.chunk.js",
+    "static/media/landing.png": "/Redberry-Blog/static/media/landing.0a2e9b893f404443f9dd.png",
+    "index.html": "/Redberry-Blog/index.html",
+    "main.c9fbb723.css.map": "/Redberry-Blog/static/css/main.c9fbb723.css.map",
+    "main.8482af1a.js.map": "/Redberry-Blog/static/js/main.8482af1a.js.map",
+    "787.dcf77665.chunk.js.map": "/Redberry-Blog/static/js/787.dcf77665.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.c9fbb723.css",
+    "static/js/main.8482af1a.js"
+  ]
+}
