@@ -157,15 +157,22 @@ export const Form = () => {
     }
 
     const validateImage = (value) => {
-        // console.log(value, "image");
-        let errors = ""
-        if (!value) errors = "გთხოვთ აირჩიოთ სურათი"
-
+        let errors = "";
+        if (!value) {
+          errors = "გთხოვთ აირჩიოთ სურათი";
+        } else {
+          // Check if the image size exceeds the limit (1 MB)
+          const maxSizeInBytes = 1 * 1024 * 1024; // 1 MB
+          if (value.size > maxSizeInBytes) {
+            errors = "სურათის ზომა არ უნდა აღემატებოდეს 1 მეგაბაიტს";
+          }
+        }
+      
         setFormErrors((prevFormErrors) => ({
-            ...prevFormErrors,
-            image: errors
-        }))
-    }
+          ...prevFormErrors,
+          image: errors,
+        }));
+      };
 
     const validateEmail = (value) => {
         setIsEmailClicked(true)

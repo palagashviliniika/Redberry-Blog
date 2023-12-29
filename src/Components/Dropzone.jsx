@@ -55,20 +55,23 @@ export const Dropzone = ({setFormData,validate, isValidated, formData}) => {
           // Create the Blob object with the extracted MIME type
           const blob = new Blob([arrayBuffer], { type: mimeType });
       
-          setFormData((prevFormData) => ({
-            ...prevFormData,
-            image: blob,
-          }));
-      
-          // Save the blob data, type, and name separately in localStorage
-          localStorage.setItem('imageBlob', JSON.stringify({
-            data: Array.from(new Uint8Array(arrayBuffer)),
-            type: mimeType,
-          }));
-          localStorage.setItem('fileName', file.name)
+          const maxSizeInBytes = 1 * 1024 * 1024; // 1 MB
+          if (blob.size <= maxSizeInBytes) {
+            setFormData((prevFormData) => ({
+              ...prevFormData,
+              image: blob,
+            }));
+        
+            // Save the blob data, type, and name separately in localStorage
+            localStorage.setItem('imageBlob', JSON.stringify({
+              data: Array.from(new Uint8Array(arrayBuffer)),
+              type: mimeType,
+            }));
+            localStorage.setItem('fileName', file.name)
+          }
         };
-        reader.readAsArrayBuffer(file);
-      };
+          reader.readAsArrayBuffer(file);
+        };
       
       
     
