@@ -5,6 +5,7 @@ import { useHorizontalScroll } from '../hooks/useSideScroll'
 
 export default function Categories({filteredCategories, setFilteredCategories}) {
     const [categories, setCategories] = useState([])
+    const scrollRef = useHorizontalScroll();
 
     const handleCategoryClick = (categoryId) => {
         setFilteredCategories((prevCategories) => {
@@ -20,8 +21,6 @@ export default function Categories({filteredCategories, setFilteredCategories}) 
         const fetchCategories = async () => {
             try {
                 const response = await api.get('/categories')
-                console.log(response.status);
-                // console.log(response.data.data);
                 setCategories(response.data.data);
             } catch (err) {
                 console.log(err.response.status);
@@ -49,7 +48,7 @@ export default function Categories({filteredCategories, setFilteredCategories}) 
     })
 
     return (
-        <div className='mx-[76px] flex gap-6 overflow-x-auto w-[684px] pb-2'>
+        <div ref={scrollRef} className='mx-[76px] flex gap-6 overflow-x-auto w-[684px] pb-2'>
             {categoryItems}
         </div>
   )

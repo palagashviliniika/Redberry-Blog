@@ -27,7 +27,7 @@ export const Label = ({ htmlFor, title, onClick, type, placeholder, value, onCha
             : isValidated === '' || isValidated.length === 0
             ? 'border-border-correct'
             : 'border-border-error'
-        } bg-inputBG rounded-xl py-3 px-4 focus:bg-inputBG-focus placeholder-customGray-plc focus:outline-border-focus`}
+        } bg-inputBG rounded-xl py-3 px-4 hover:bg-inputBG-hover focus:bg-inputBG-focus placeholder-customGray-plc focus:outline-border-focus`}
       />
       {isValidated && showErrors && <ErrorMessage error={isValidated} />}
     </>

@@ -11,8 +11,6 @@ export const Blogs = ({filteredCategories}) => {
     const fetchBlogs = async () => {
       try {
         const response = await authenticatedApi.get('/blogs')
-        console.log(response.status, "blogs")
-        // console.log(response.data.data, "blogs")
         setBlogs(response.data.data)
       } catch (err) {
         console.log(err.response.status);
@@ -36,7 +34,6 @@ useEffect(() => {
 const blogItems = filteredBlogs.map((blog) => {
     const parsedPublishDate = new Date(blog.publish_date);
 
-    // Use the ternary operator to conditionally return the BlogOverview component
     return currentDate >= parsedPublishDate && (
       <BlogOverview 
         id={blog.id}

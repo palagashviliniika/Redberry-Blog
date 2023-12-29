@@ -7,7 +7,8 @@ module.exports = {
     extend: {
       colors: {
         "customPurple": {
-          DEFAULT: "#5D37F3"
+          DEFAULT: "#5D37F3",
+          hover: "#512BE7"
         },
         "customBlack": {
           DEFAULT: "#1A1A1F"
@@ -17,10 +18,13 @@ module.exports = {
           fill: "#FCFCFD",
           plc: "#85858D",
           page: "#FBFAFF",
-          uploaded: "#F2F2FA"
+          uploaded: "#F2F2FA",
+          hover: "#D9D8E0",
+          altHover: "#F5F4F9"
         },
         "inputBG": {
-          DEFAULT: "#F9F9FA",
+          DEFAULT: "#FCFCFD",
+          hover: "#F9F9FA",
           error: "#FAF2F3",
           correct: "#F8FFF8",
           focus: "#F7F7FF"

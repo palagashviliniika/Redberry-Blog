@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import infoCircle from '../assets/infoCircle.png'
 import api from '../api/posts'
 import { useAuth } from '../Contexts/AuthContext'
 import { Success } from './Success'
-import { Label } from './Label'
 import { ErrorMessage } from './ErrorMessage'
 
 export const Login = ({onClose}) => {
@@ -38,10 +36,9 @@ export const Login = ({onClose}) => {
 
     useEffect(() => {
         if (isValidated === true) {
-        //   console.log("sending post request");
         handlePostRequest();
         } else if (isValidated === false) {
-          console.log("data is incorrect");
+        //   console.log("data is incorrect");
         }
       }, [isValidated]);
 
@@ -73,15 +70,6 @@ export const Login = ({onClose}) => {
         }
     }
 
-    // useEffect(() => {
-    //     console.log(isValidated, "1");
-    // }, [isValidated])
-
-    // useEffect(()=> {
-    //     formData.email && validate(formData.email)
-    //     console.log("asd");
-    // }, [])
-
     return (
         <>
         {
@@ -92,15 +80,6 @@ export const Login = ({onClose}) => {
                 </h1>
                 <form onSubmit={handleSubmit}>
                     <div className='flex flex-col gap-2'>
-                        {/* <Label 
-                            htmlFor={"email"} 
-                            title={'ელ-ფოსტა'} 
-                            type={"text"}
-                            placeholder={"Example@redberry.ge"} 
-                            value={formData.email} 
-                            onChange={handleChange} 
-                            isValidated={isValidated}
-                        /> */}
                         <label htmlFor={'email'} className='font-medium text-sm text-customBlack pt-6'>ელ-ფოსტა</label>
                         <input 
                             type="email" 
@@ -109,7 +88,7 @@ export const Login = ({onClose}) => {
                             placeholder='Example@redberry.ge'
                             value={formData.email}
                             onChange={handleChange}
-                            className={`text-sm font-normal border ${isValidated === false ? 'border-border-error' : 'border-border'} rounded-xl py-3 px-4 ${isValidated === false ? 'bg-inputBG-error' : 'bg-inputBG'}  focus:bg-inputBG-focus placeholder-customGray-plc focus:outline-border-focus`}
+                            className={`text-sm font-normal border ${isValidated === false ? 'border-border-error' : 'border-border'} rounded-xl py-3 px-4 ${isValidated === false ? 'bg-inputBG-error' : 'bg-inputBG'} hover:bg-inputBG-hover focus:bg-inputBG-focus placeholder-customGray-plc focus:outline-border-focus`}
                         />
                         {
                             error &&
@@ -117,7 +96,7 @@ export const Login = ({onClose}) => {
                         }
                         <button
                             type='submit'
-                            className='mt-4 font-medium text-white bg-customPurple rounded-lg px-5 py-2.5 text-sm'
+                            className='mt-4 font-medium text-white bg-customPurple hover:bg-customPurple-hover active:scale-95 transition ease-in-out rounded-lg px-5 py-2.5 text-sm'
                         >
                             შესვლა
                         </button>

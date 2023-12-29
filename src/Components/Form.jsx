@@ -4,9 +4,11 @@ import { Dropdown } from './Dropdown'
 import { Dropzone } from './Dropzone'
 import { ErrorMessage } from './ErrorMessage'
 import { authenticatedApi } from '../api/posts'
+import { Modal } from './Modal'
 
 export const Form = () => {
     const [isEmailClicked, setIsEmailClicked] = useState(false)
+    const [isAdded, setIsAdded] = useState(false)
     const [formData, setFormData] = useState(() => {
         const storedFormData = localStorage.getItem('formData');
         return storedFormData ? JSON.parse(storedFormData) : {
@@ -31,31 +33,23 @@ export const Form = () => {
       });
 
     const handleSubmit = async (e) => {
-        e.preventDefault()
-        // console.log(formData);
-        
+        e.preventDefault()        
         const newFormData = new FormData();
         
-        // Iterate through the properties of the existing formData
         for (const key in formData) {
             // Check if the property is not inherited from the prototype chain
             if (formData.hasOwnProperty(key)) {
-                // Append the property to the new FormData
                 newFormData.append(key, formData[key]);
             }
         }
-        
-        for (const entry of newFormData.entries()) {
-            console.log(entry[0], entry[1]);
-          }
 
         try {
             const response = await authenticatedApi.post('/blogs', newFormData)
-            console.log(response.status);
             localStorage.removeItem('formData');
             localStorage.removeItem('fileName');
             localStorage.removeItem('imageBlob');
             localStorage.removeItem('selectedValues');
+            setIsAdded(true)
         } catch (err) {
             console.log(err.response.status);
             console.log(err.message);
@@ -143,7 +137,6 @@ export const Form = () => {
     }
     
     const validatePublishDate = (value) => {
-        console.log(value, "date");
         let errors = ""
         if (!value.trim()) errors = "გთხოვთ მიუთითოთ გამოქვეყნების თარიღი"
         
@@ -179,7 +172,6 @@ export const Form = () => {
         const redberryRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@redberry.ge$/;
         let errors = "";
       
-        // Rule: Email should match the redberryRegex pattern
         if (value.trim() && !redberryRegex.test(value)) {
           errors = "მეილი უნდა მთავრდებოდეს @redberry.ge-ით";
         }
@@ -191,7 +183,6 @@ export const Form = () => {
       };
 
     const isFormValid = () => {
-        // Check if all form fields are valid
         return Object.values(formErrors).every((error) => error === "" || (Array.isArray(error) && error.length === 0));
     };
       
@@ -217,11 +208,24 @@ export const Form = () => {
             }));
         }
     }, []);
-    
+
     useEffect(() => {
-        console.log(formData, 'form data');
-        // console.log(formErrors);
-    }, [formData])
+        for (const key in formData) {
+            const value = formData[key]
+            if (value !== '[]' && value !== "" && value !== null) {
+                key === 'categories' 
+                    ? validateCategories(value) 
+                    : key === "image" 
+                        ? validateImage(value) 
+                        : validateField(key, value)
+            }
+        }
+            
+        }, []);
+
+    const handleModalClose = () => {
+        setIsAdded(false)
+    }
 
     return (
         <form onSubmit={handleSubmit} className='pt-10'>
@@ -265,7 +269,7 @@ export const Form = () => {
                     rows={5}
                     value={formData.description}
                     onChange={handleChange}
-                    className={`text-sm font-normal border ${formErrors.description === null ? 'border-border bg-inputBG' : formErrors.description === "" || formErrors.description === 0 ? 'border-border-correct bg-inputBG-correct' : 'border-border-error bg-inputBG-error'} rounded-xl py-3 px-4 focus:bg-inputBG-focus placeholder-customGray-plc focus:outline-border-focus`}
+                    className={`text-sm font-normal border ${formErrors.description === null ? 'border-border bg-inputBG' : formErrors.description === "" || formErrors.description === 0 ? 'border-border-correct bg-inputBG-correct' : 'border-border-error bg-inputBG-error'} rounded-xl py-3 px-4 hover:bg-inputBG-hover focus:bg-inputBG-focus placeholder-customGray-plc focus:outline-border-focus`}
                     />
                 <ul className={`text-xs ${formErrors.description === null ? 'text-customGray-plc' : formErrors.description === "" || formErrors.description.length === 0 ? 'text-border-correct' : 'text-customRed'}`}>
                     <li>მინიმუმ 2 სიმბოლო</li>
@@ -288,12 +292,17 @@ export const Form = () => {
                 <div className='flex justify-end mt-10 mb-20'>
                     <button 
                         type='submit' 
-                        className='w-72 font-medium text-white bg-customPurple disabled:bg-border rounded-lg py-2.5 text-sm'
+                        className='w-72 font-medium text-white bg-customPurple disabled:bg-border rounded-lg py-2.5 text-sm hover:bg-customPurple-hover active:scale-95 transition ease-in-out'
                         disabled={!isFormValid()}
                     >
                         გამოქვეყნება
                     </button>
                 </div>
+
+                {
+                    isAdded &&
+                        <Modal isVisible={isAdded} onClose={handleModalClose} blogAdded/>
+                }
 
             </form>
     )

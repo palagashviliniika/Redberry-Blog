@@ -10,7 +10,7 @@ export const AddBlog = () => {
     <div className='bg-customGray-page h-full'>
       <Navbar />
       <div className='mt-10 flex '>
-        <Link to={'/'} className='ml-[76px] bg-customGray w-11 h-11 flex justify-center items-center rounded-full cursor-pointer'>
+        <Link to={'/'} className='ml-[76px] bg-customGray w-11 h-11 flex justify-center items-center rounded-full cursor-pointer hover:bg-customGray-hover active:scale-95 transition ease-in-out'>
           <ArrowBackIcon />
         </Link>
         <div className='ml-[25%] flex flex-col w-[600px]'>

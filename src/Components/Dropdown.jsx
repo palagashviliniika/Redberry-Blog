@@ -3,9 +3,12 @@ import api from '../api/posts'
 import SingleCategory from './SingleCategory';
 import { ArrowDown } from '../icons/ArrowDown';
 import { ErrorMessage } from './ErrorMessage';
+import { useHorizontalScroll } from '../hooks/useSideScroll'
+
 
 export const Dropdown = ({setFormData, validate, isValidated, formData}) => {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+  const scrollRef = useHorizontalScroll();
   const [categories, setCategories] = useState([])
   const [isClicked, setIsClicked] = useState(false)
   const [selectedValues, setSelectedValues] = useState(() => {
@@ -17,8 +20,6 @@ export const Dropdown = ({setFormData, validate, isValidated, formData}) => {
     const fetchCategories = async () => {
         try {
             const response = await api.get('/categories')
-            console.log(response.status);
-            // console.log(response.data.data);
             setCategories(response.data.data);
         } catch (err) {
             console.log(err.response.status);
@@ -56,7 +57,6 @@ export const Dropdown = ({setFormData, validate, isValidated, formData}) => {
   }, [selectedValues])
 
   const handleOptionClick = (option) => {
-    // Toggle the selected state of the option
     const isSelected = selectedValues.includes(option);
     const updatedValues = isSelected
       ? selectedValues.filter((value) => value !== option)
@@ -76,9 +76,9 @@ export const Dropdown = ({setFormData, validate, isValidated, formData}) => {
         <label onClick={toggleDropdown} htmlFor={"categories"} className='font-medium text-sm text-customBlack pt-6'>კატეგორია *</label>
         </div>
         <div
-            className={`flex justify-between mt-2 text-sm font-normal rounded-xl border ${isDropdownVisible && 'bg-inputBG-focus border-2 border-border-focus'} ${isValidated === null ? 'border-border bg-inputBG' : (isValidated === "" || isValidated.length === 0) && !isDropdownVisible ? 'border-border-correct bg-inputBG-correct' : 'border-border-error bg-inputBG-error'}`}
+            className={`flex justify-between mt-2 text-sm font-normal rounded-xl border ${isDropdownVisible && 'bg-inputBG-focus border-2 border-border-focus'} ${isValidated === null ? 'border-border bg-inputBG' : (isValidated === "" || isValidated.length === 0) && !isDropdownVisible ? 'border-border-correct bg-inputBG-correct' : 'border-border-error bg-inputBG-error'} hover:bg-inputBG-hover`}
         >
-            <div className='text-customGray-plc overflow-x-auto'>
+            <div ref={scrollRef} className='scroll-smooth text-customGray-plc overflow-x-auto ml-1'>
                 {
                     selectedValues.length > 0 ?
                     <div className='flex gap-2 p-1.5'>

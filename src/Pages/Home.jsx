@@ -10,9 +10,6 @@ const Home = () => {
         return storedFilteredCategories ? JSON.parse(storedFilteredCategories) : []
     })
 
-    // useEffect(() => {
-    //     console.log(filteredCategories);
-    // }, [filteredCategories])
     useEffect(() => {
         localStorage.setItem('filteredCategories', JSON.stringify(filteredCategories));
       }, [filteredCategories]);

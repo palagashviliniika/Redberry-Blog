@@ -15,8 +15,6 @@ export default function SingleBlog() {
     const fetchBlog = async () => {
       try {
         const response = await authenticatedApi.get(`/blogs/${id}`)
-        console.log(response.status, "blogs detail");
-        // console.log(response.data);
         setBlogDetails(response.data)
       } catch (err) {
         console.log(err.message.status);
@@ -36,7 +34,7 @@ export default function SingleBlog() {
     <div>
         <Navbar btn/>
         <div className='mx-[76px] mt-10 flex justify-center relative'>
-          <Link to={'/'} className='absolute left-0 bg-white w-11 h-11 flex justify-center items-center rounded-full cursor-pointer'>
+          <Link to={'/'} className='absolute left-0 bg-white active:scale-95 transition ease-in-out w-11 h-11 flex justify-center items-center rounded-full cursor-pointer'>
             <ArrowBackIcon />
           </Link>
           <BlogDetails id={id} blogDetails={blogDetails}/>

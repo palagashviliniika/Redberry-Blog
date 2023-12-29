@@ -21,8 +21,6 @@ export default function SliderItems({currentSlide, setCurrentSlide, categories})
     const fetchBlogs = async () => {
       try {
         const response = await authenticatedApi.get('/blogs')
-        console.log(response.status, "blogs")
-        // console.log(response.data.data, "blogs")
         setRelatedBlogs(response.data.data)
       } catch (err) {
         console.log(err.response.status);
