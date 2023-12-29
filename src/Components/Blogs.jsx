@@ -5,6 +5,7 @@ import { authenticatedApi } from '../api/posts'
 export const Blogs = ({filteredCategories}) => {
   const [blogs, setBlogs] = useState([])
   const [filteredBlogs, setFilteredBlogs] = useState([]);
+  const currentDate = new Date()
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -32,9 +33,13 @@ useEffect(() => {
 }, [filteredCategories, blogs]);
 
 
-  const blogItems = filteredBlogs.map((blog) => {
-    return (
+const blogItems = filteredBlogs.map((blog) => {
+    const parsedPublishDate = new Date(blog.publish_date);
+
+    // Use the ternary operator to conditionally return the BlogOverview component
+    return currentDate >= parsedPublishDate && (
       <BlogOverview 
+        id={blog.id}
         key={blog.id}
         title={blog.title}
         description={blog.description}
@@ -44,7 +49,7 @@ useEffect(() => {
         categories={blog.categories}
       />
     )
-  })
+  });
 
   return (
     <div className='mx-[76px] my-16 grid grid-cols-3 gap-x-8 gap-y-14'>

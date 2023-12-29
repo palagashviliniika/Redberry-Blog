@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import bigPhoto from '../assets/bigPhoto.jpg'
 import SingleCategory from './SingleCategory'
 import { ArrowIcon } from '../icons/ArrowIcon'
@@ -17,8 +17,14 @@ export const BlogOverview = ({id, title, description, image, publish_date, autho
         )
     })
 
+    // useEffect(() => {
+    //     const currentDate = new Date()
+    //     const parsedPublishDate = new Date(publish_date)
+    //     console.log(currentDate >=parsedPublishDate);
+    // }, [])
+
   return (
-    <div className='flex flex-col'>
+    <div className='flex flex-col h-[620px]'>
         <img src={image} alt="" className='h-[328px] object-cover rounded-xl'/>
         <h3 className='pt-6 font-medium text-base text-customBlack'>
             {author}
@@ -35,7 +41,7 @@ export const BlogOverview = ({id, title, description, image, publish_date, autho
         <p className='pt-4 text-textGray-dark font-normal text-base line-clamp-2'>
             {description}
         </p>
-        <Link to={'/'} className='pt-4 flex items-center text-customPurple font-medium text-sm gap-1'>
+        <Link to={`/blogs/${id}`} className='pt-4 flex items-center text-customPurple font-medium text-sm gap-1'>
             <p>სრულად ნახვა</p>
             <ArrowIcon />
         </Link>

@@ -7,7 +7,7 @@ export default function App() {
   return (
     <Routes>
       <Route path='/' element={<Home />}></Route>
-      <Route path='/blog' element={<SingleBlog />}></Route>
+      <Route path='/blogs/:id' element={<SingleBlog />}></Route>
       <Route path='/add_blog' element={<AddBlog />}></Route>
     </Routes>
   )

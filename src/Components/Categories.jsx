@@ -49,7 +49,7 @@ export default function Categories({filteredCategories, setFilteredCategories}) 
     })
 
     return (
-        <div className='mx-[76px] flex gap-6 overflow-x-auto w-[684px]'>
+        <div className='mx-[76px] flex gap-6 overflow-x-auto w-[684px] pb-2'>
             {categoryItems}
         </div>
   )
